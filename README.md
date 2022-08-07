@@ -1,16 +1,31 @@
-# flutter_rx
+From: https://www.youtube.com/watch?v=xBFWMYmm9ro
 
-A new Flutter project.
+## use hooks instead of making StatefulWidget
 
-## Getting Started
+### useMemoized
 
-This project is a starting point for a Flutter application.
+Maintain an instance , and create a new instance when dependency changes.
 
-A few resources to get you started if this is your first Flutter project:
+```dart
+final subject = useMemoized(() => BehaviorSubject<String>(), [key]);
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### useEffect
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Make an operation when dependency changes
+
+```dart
+useEffect(() => subject.close, [subject]);
+```
+
+## BehaviorSubject
+
+New listeners will get last event.
+
+## debounceTime
+
+The stream will not emit events when continuesly getting new events, until had rest of a time period after last event.
+
+```dart
+subject.stream.distinct().debounceTime(const Duration(seconds: 1)),
+```
