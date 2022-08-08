@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:rxdart/rxdart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,32 +20,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends HookWidget {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // maintain an instance of BehaviorSubject<String>
-    // when key changes, create a new instance
-    final subject = useMemoized(() => BehaviorSubject<String>(), [key]);
-    // when subjects changes(in this case rebuilds), run subject.close
-    useEffect(() => subject.close, [subject]);
     return Scaffold(
-      appBar: AppBar(
-          title: StreamBuilder(
-        stream:
-            // distinct to get distinct stream data
-            // debounceTime to limit stream emit to once a time period
-            subject.stream.distinct().debounceTime(const Duration(seconds: 1)),
-        initialData: 'Please enter text...',
-        builder: (ctx, snapshot) => Text(snapshot.requireData.toString()),
-      )),
-      body: Center(
-          child: TextField(
-        // sink is write only stream
-        // while stream is read only stream
-        onChanged: subject.sink.add,
-      )),
+      appBar: AppBar(title: const Text('Flutter Rx')),
     );
   }
 }
