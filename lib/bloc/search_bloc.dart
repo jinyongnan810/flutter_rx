@@ -17,6 +17,7 @@ class SearchBloc {
         .switchMap<SearchResult?>((text) {
       if (text.isEmpty) return Stream<SearchResult?>.value(null);
       return Rx.fromCallable(() => api.search(text))
+          .delay(const Duration(seconds: 1))
           .map((things) {
             return things.isEmpty
                 ? const SearchResultNoResult()
