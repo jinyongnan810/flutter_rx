@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import 'dart:developer' as devtools show log;
 
 extension Log on Object {
-  void log() => devtools.log(toString());
+  void log() => print(toString());
 }
 
 void main() {
@@ -28,12 +28,12 @@ class MyApp extends StatelessWidget {
 
 Future<void> testIt() async {
   final stream1 = Stream.periodic(
-      const Duration(seconds: 1), (count) => 'Stream 1, count:$count');
+      const Duration(seconds: 1), (count) => 'Stream 1, count:$count').take(3);
   final stream2 = Stream.periodic(
       const Duration(seconds: 3), (count) => 'Stream 2, count:$count');
-  final combined =
-      Rx.combineLatest([stream1, stream2], (values) => values.join(' & '));
-  combined.listen((event) {
+  final concated =
+      stream1.concatWith([stream2]); // Rx.concat([stream1, stream2]);
+  concated.listen((event) {
     event.log();
   });
 }
@@ -50,3 +50,10 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+// Stream 1, count:0
+// Stream 1, count:1
+// Stream 1, count:2
+// Stream 2, count:0
+// Stream 2, count:1
+// Stream 2, count:2
