@@ -31,8 +31,8 @@ Future<void> testIt() async {
       const Duration(seconds: 1), (count) => 'Stream 1, count:$count');
   final stream2 = Stream.periodic(
       const Duration(seconds: 3), (count) => 'Stream 2, count:$count');
-  final concated = Rx.merge([stream1, stream2]);
-  concated.listen((event) {
+  final zipped = Rx.zip([stream1, stream2], ((values) => values.join(' & ')));
+  zipped.listen((event) {
     event.log();
   });
 }
@@ -50,16 +50,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// Stream 1, count:0
-// Stream 1, count:1
-// Stream 1, count:2
-// Stream 2, count:0
-// Stream 1, count:3
-// Stream 1, count:4
-// Stream 1, count:5
-// Stream 2, count:1
-// Stream 1, count:6
-// Stream 1, count:7
-// Stream 1, count:8
-// Stream 2, count:2
-// Stream 1, count:9
+// Stream 1, count:0 & Stream 2, count:0
+// Stream 1, count:1 & Stream 2, count:1
+// Stream 1, count:2 & Stream 2, count:2
+// Stream 1, count:3 & Stream 2, count:3
+// Stream 1, count:4 & Stream 2, count:4
