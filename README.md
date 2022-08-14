@@ -4,6 +4,37 @@ From: https://www.youtube.com/watch?v=xBFWMYmm9ro
 
 check out https://rxmarbles.com/#from
 
+## switchMap
+
+switchMap is basically asyncly mapping a stream to another, however if the source emits a new event, previous mapped stream will disapear.
+![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2F8e113b29-cc81-46b3-82e3-71053bcfc6c5.gif?alt=media&token=d3d15113-f34d-4511-a809-7dc57535f2c4)
+
+```dart
+final subject = useMemoized(() => BehaviorSubject<DateTime>());
+final stream = useMemoized(() => subject.switchMap((dateTime) =>
+    Stream.periodic(const Duration(seconds: 1),
+        (count) => 'Stream count($count), DateTime:$dateTime')));
+useEffect(() => subject.close, [key]);
+return Scaffold(
+  appBar: AppBar(title: const Text('Home Page')),
+  body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+    StreamBuilder<String>(
+        stream: stream,
+        builder: (ctx, snapshot) {
+          if (snapshot.hasData) {
+            final str = snapshot.requireData;
+            return Text(str);
+          } else {
+            return const Text('Waiting stream');
+          }
+        }),
+    TextButton(
+        onPressed: () => subject.add(DateTime.now()),
+        child: const Text('Start the stream'))
+  ]),
+);
+```
+
 ## zip
 
 ```dart
@@ -105,6 +136,8 @@ combined.listen((event) {
 ## make api calls when user input changes
 
 ### [demo](https://github.com/jinyongnan810/flutter_rx/compare/1418b65ab397e6f37aca8d6e459ee1a9c1ba1631...0fbfe211441d2e79f39653e8313ae8a000366e5a)
+
+![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2F7090b2c6-d7b3-492f-9a1b-e3b685fe9da5.gif?alt=media&token=aefd30ab-93ca-4803-ba43-63c43af092af)
 
 core rx logic
 
