@@ -1,0 +1,1 @@
+enum TypeOfThings { animal, person }

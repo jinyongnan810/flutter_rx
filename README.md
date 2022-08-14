@@ -4,9 +4,88 @@ From: https://www.youtube.com/watch?v=xBFWMYmm9ro
 
 check out https://rxmarbles.com/#from
 
+## using map bloc to filter by user choices (inlcudes FilterChip)
+
+![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2Fb0613aba-d1da-4b9e-a629-7e0429b7bc52.gif?alt=media&token=7cdc49bb-8d08-4e64-8d1c-3f3c9af062a6)
+
+```dart
+// step 1. define filtering bloc
+class Bloc {
+  final Sink<TypeOfThings?> setTypeOfThing;
+  final Stream<TypeOfThings?> currentTypeOfThing;
+  final Stream<Iterable<Thing>> things;
+  const Bloc._({
+    required this.setTypeOfThing,
+    required this.currentTypeOfThing,
+    required this.things,
+  });
+
+  void dispose() {
+    setTypeOfThing.close();
+  }
+
+  factory Bloc({
+    required Iterable<Thing> things,
+  }) {
+    final subject = BehaviorSubject<TypeOfThings?>();
+    final filteredThings = subject
+        .debounceTime(const Duration(milliseconds: 300))
+        .map<Iterable<Thing>>((type) =>
+            type != null ? things.where((thing) => thing.type == type) : things)
+        .startWith(things);
+    return Bloc._(
+        setTypeOfThing: subject.sink,
+        currentTypeOfThing: subject.stream,
+        things: filteredThings);
+  }
+}
+// step 2. using bloc
+final bloc = useMemoized(() => Bloc(things: things));
+useEffect(() => bloc.dispose, [key]);
+return Scaffold(
+  appBar: AppBar(title: const Text('Chapter 8 FilterChip')),
+  body: Column(children: [
+    StreamBuilder<TypeOfThings?>(
+        stream: bloc.currentTypeOfThing,
+        builder: (ctx, snapShot) {
+          final selectedType = snapShot.data;
+          return Wrap(
+            children: TypeOfThings.values.map((type) {
+              return FilterChip(
+                  selectedColor: Colors.blueAccent[100],
+                  label: Text(type.name),
+                  selected: selectedType == type,
+                  onSelected: (selected) {
+                    final typeToSelect = selected ? type : null;
+                    bloc.setTypeOfThing.add(typeToSelect);
+                  });
+            }).toList(),
+          );
+        }),
+    StreamBuilder<Iterable<Thing>>(
+      stream: bloc.things,
+      builder: (ctx, snapShot) {
+        final things = snapShot.data ?? [];
+        return Expanded(
+            child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            return ListTile(
+              title: Text(
+                  '(${things.elementAt(index).type.name})${things.elementAt(index).name}'),
+            );
+          },
+          itemCount: things.length,
+        ));
+      },
+    )
+  ]),
+);
+```
+
 ## switchMap
 
-switchMap is basically asyncly mapping a stream to another, however if the source emits a new event, previous mapped stream will disapear.
+switchMap is basically asyncly mapping a stream to another, however if the source emits a new event, previous mapped stream will disapear.(while flatMap won't dispose the previous mapped streams)
+
 ![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2F8e113b29-cc81-46b3-82e3-71053bcfc6c5.gif?alt=media&token=d3d15113-f34d-4511-a809-7dc57535f2c4)
 
 ```dart
