@@ -4,6 +4,68 @@ From: https://www.youtube.com/watch?v=xBFWMYmm9ro
 
 check out https://rxmarbles.com/#from
 
+## using combineLatest to build up full name
+
+![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2F8b334993-e705-4d1a-b782-ed0c3f0ee063.gif?alt=media&token=ff9f5c96-4aeb-4184-a828-61ae9ea15883)
+
+```dart
+// 1. define bloc
+class Bloc {
+  final Sink<String?> setFirst;
+  final Sink<String?> setLast;
+  final Stream<String> full;
+  const Bloc._({
+    required this.setFirst,
+    required this.setLast,
+    required this.full,
+  });
+
+  void dispose() {
+    setFirst.close();
+    setLast.close();
+  }
+
+  factory Bloc() {
+    final firstSubject = BehaviorSubject<String?>();
+    final lastSubject = BehaviorSubject<String?>();
+    final full = Rx.combineLatest2<String?, String?, String>(
+        firstSubject, lastSubject, (first, last) {
+      if (first == null || last == null || first.isEmpty || last.isEmpty) {
+        return 'First and last name must be provided';
+      }
+      return '$first $last';
+    }).startWith('First and last name must be provided');
+
+    return Bloc._(
+        setFirst: firstSubject.sink, setLast: lastSubject.sink, full: full);
+  }
+}
+// 2. use bloc
+final bloc = useMemoized(() => Bloc());
+useEffect(() => bloc.dispose, [key]);
+return Scaffold(
+  appBar: AppBar(title: const Text('Chapter 9 Full Name')),
+  body: Column(children: [
+    TextField(
+      decoration: const InputDecoration(label: Text('First Name')),
+      onChanged: (first) => bloc.setFirst.add(first),
+    ),
+    TextField(
+      decoration: const InputDecoration(label: Text('Last Name')),
+      onChanged: (last) => bloc.setLast.add(last),
+    ),
+    StreamBuilder<String>(
+        stream: bloc.full,
+        builder: (ctx, snapShot) {
+          final fullName = snapShot.data ?? '';
+          return Center(
+            child: Text(fullName),
+          );
+        })
+  ]),
+);
+```
+
 ## using map bloc to filter by user choices (inlcudes FilterChip)
 
 ![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2Fb0613aba-d1da-4b9e-a629-7e0429b7bc52.gif?alt=media&token=7cdc49bb-8d08-4e64-8d1c-3f3c9af062a6)

@@ -1,33 +1,32 @@
-import 'package:flutter_rx/models/thing.dart';
-import 'package:flutter_rx/models/type.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Bloc {
-  final Sink<TypeOfThings?> setTypeOfThing;
-  final Stream<TypeOfThings?> currentTypeOfThing;
-  final Stream<Iterable<Thing>> things;
+  final Sink<String?> setFirst;
+  final Sink<String?> setLast;
+  final Stream<String> full;
   const Bloc._({
-    required this.setTypeOfThing,
-    required this.currentTypeOfThing,
-    required this.things,
+    required this.setFirst,
+    required this.setLast,
+    required this.full,
   });
 
   void dispose() {
-    setTypeOfThing.close();
+    setFirst.close();
+    setLast.close();
   }
 
-  factory Bloc({
-    required Iterable<Thing> things,
-  }) {
-    final subject = BehaviorSubject<TypeOfThings?>();
-    final filteredThings = subject
-        .debounceTime(const Duration(milliseconds: 300))
-        .map<Iterable<Thing>>((type) =>
-            type != null ? things.where((thing) => thing.type == type) : things)
-        .startWith(things);
+  factory Bloc() {
+    final firstSubject = BehaviorSubject<String?>();
+    final lastSubject = BehaviorSubject<String?>();
+    final full = Rx.combineLatest2<String?, String?, String>(
+        firstSubject, lastSubject, (first, last) {
+      if (first == null || last == null || first.isEmpty || last.isEmpty) {
+        return 'First and last name must be provided';
+      }
+      return '$first $last';
+    }).startWith('First and last name must be provided');
+
     return Bloc._(
-        setTypeOfThing: subject.sink,
-        currentTypeOfThing: subject.stream,
-        things: filteredThings);
+        setFirst: firstSubject.sink, setLast: lastSubject.sink, full: full);
   }
 }
