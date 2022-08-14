@@ -4,6 +4,67 @@ From: https://www.youtube.com/watch?v=xBFWMYmm9ro
 
 check out https://rxmarbles.com/#from
 
+## AsyncSnapshotBuilder
+
+```dart
+import 'package:flutter/material.dart';
+
+typedef AsyncSnapshotBuilderCallback<T> = Widget Function(
+    BuildContext context, T? data);
+
+class AsyncSnapshotBuilder<T> extends StatelessWidget {
+  final Stream<T> stream;
+  final AsyncSnapshotBuilderCallback<T>? onNone;
+  final AsyncSnapshotBuilderCallback<T>? onWaiting;
+  final AsyncSnapshotBuilderCallback<T>? onActive;
+  final AsyncSnapshotBuilderCallback<T>? onDone;
+  const AsyncSnapshotBuilder(
+      {Key? key,
+      required this.stream,
+      this.onNone,
+      this.onWaiting,
+      this.onActive,
+      this.onDone})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<T>(
+        stream: stream,
+        builder: (ctx, snapShot) {
+          switch (snapShot.connectionState) {
+            case ConnectionState.none:
+              final callback = onNone ?? (_, __) => const SizedBox.shrink();
+              return callback(ctx, snapShot.data);
+            case ConnectionState.waiting:
+              final callback =
+                  onWaiting ?? (_, __) => const CircularProgressIndicator();
+              return callback(ctx, snapShot.data);
+            case ConnectionState.active:
+              final callback = onActive ?? (_, __) => const SizedBox.shrink();
+              return callback(ctx, snapShot.data);
+            case ConnectionState.done:
+              final callback = onDone ?? (_, __) => const SizedBox.shrink();
+              return callback(ctx, snapShot.data);
+          }
+        });
+  }
+}
+```
+
+use it like
+
+```dart
+AsyncSnapshotBuilder<String>(
+    stream: bloc.full,
+    onActive: (ctx, snapShot) {
+      final fullName = snapShot ?? '';
+      return Center(
+        child: Text(fullName),
+      );
+    });
+```
+
 ## using combineLatest to build up full name
 
 ![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2F8b334993-e705-4d1a-b782-ed0c3f0ee063.gif?alt=media&token=ff9f5c96-4aeb-4184-a828-61ae9ea15883)

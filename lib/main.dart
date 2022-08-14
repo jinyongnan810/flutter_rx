@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_rx/async_snapshot_builder.dart';
 import 'package:flutter_rx/models/bloc.dart';
 
 void main() {
@@ -40,14 +41,14 @@ class HomePage extends HookWidget {
           decoration: const InputDecoration(label: Text('Last Name')),
           onChanged: (last) => bloc.setLast.add(last),
         ),
-        StreamBuilder<String>(
+        AsyncSnapshotBuilder<String>(
             stream: bloc.full,
-            builder: (ctx, snapShot) {
-              final fullName = snapShot.data ?? '';
+            onActive: (ctx, snapShot) {
+              final fullName = snapShot ?? '';
               return Center(
                 child: Text(fullName),
               );
-            })
+            }),
       ]),
     );
   }
