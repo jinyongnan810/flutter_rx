@@ -39,6 +39,9 @@ dependencies:
   freezed_annotation: ^2.1.0
   json_annotation: ^4.6.0
   firebase_core: ^1.20.1
+  firebase_auth: ^3.6.3
+  cloud_firestore: ^3.4.4
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:
