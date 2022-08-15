@@ -4,65 +4,41 @@ From: https://www.youtube.com/watch?v=xBFWMYmm9ro
 
 check out https://rxmarbles.com/#from
 
-## AsyncSnapshotBuilder
+## make async actions & concat
 
 ```dart
-import 'package:flutter/material.dart';
-
-typedef AsyncSnapshotBuilderCallback<T> = Widget Function(
-    BuildContext context, T? data);
-
-class AsyncSnapshotBuilder<T> extends StatelessWidget {
-  final Stream<T> stream;
-  final AsyncSnapshotBuilderCallback<T>? onNone;
-  final AsyncSnapshotBuilderCallback<T>? onWaiting;
-  final AsyncSnapshotBuilderCallback<T>? onActive;
-  final AsyncSnapshotBuilderCallback<T>? onDone;
-  const AsyncSnapshotBuilder(
-      {Key? key,
-      required this.stream,
-      this.onNone,
-      this.onWaiting,
-      this.onActive,
-      this.onDone})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<T>(
-        stream: stream,
-        builder: (ctx, snapShot) {
-          switch (snapShot.connectionState) {
-            case ConnectionState.none:
-              final callback = onNone ?? (_, __) => const SizedBox.shrink();
-              return callback(ctx, snapShot.data);
-            case ConnectionState.waiting:
-              final callback =
-                  onWaiting ?? (_, __) => const CircularProgressIndicator();
-              return callback(ctx, snapShot.data);
-            case ConnectionState.active:
-              final callback = onActive ?? (_, __) => const SizedBox.shrink();
-              return callback(ctx, snapShot.data);
-            case ConnectionState.done:
-              final callback = onDone ?? (_, __) => const SizedBox.shrink();
-              return callback(ctx, snapShot.data);
-          }
-        });
-  }
+// read from file, make stream from future, and transfrom to a new stream
+Stream<String> getNames({required String path}) {
+  final names = rootBundle.loadString(path);
+  return Stream.fromFuture(names).transform(const LineSplitter());
 }
-```
-
-use it like
-
-```dart
-AsyncSnapshotBuilder<String>(
-    stream: bloc.full,
-    onActive: (ctx, snapShot) {
-      final fullName = snapShot ?? '';
-      return Center(
-        child: Text(fullName),
-      );
-    });
+// concat streams
+Stream<String> getAllNames() => getNames(path: 'assets/cats.txt').concatWith(
+    [getNames(path: 'assets/dogs.txt')]).delay(const Duration(seconds: 2));
+// await for the stream to finish and show future result as a list
+return Scaffold(
+      appBar: AppBar(title: const Text('Chapter 10 concat')),
+      // to string makes a stream to become a future that waits for all the events and return list
+      body: FutureBuilder<List<String>>(
+        future: getAllNames().toList(),
+        builder: (ctx, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              return const CircularProgressIndicator();
+            case ConnectionState.done:
+              final names = snapshot.data ?? [];
+              return ListView.builder(
+                itemBuilder: ((context, index) => ListTile(
+                      title: Text(names[index]),
+                    )),
+                itemCount: names.length,
+              );
+          }
+        },
+      ),
+    );
 ```
 
 ## using combineLatest to build up full name
