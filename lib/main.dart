@@ -1,10 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Chapter 10 concat',
+      title: '',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -24,41 +26,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Stream<String> getNames({required String path}) {
-  final names = rootBundle.loadString(path);
-  return Stream.fromFuture(names).transform(const LineSplitter());
-}
-
-Stream<String> getAllNames() => getNames(path: 'assets/cats.txt').concatWith(
-    [getNames(path: 'assets/dogs.txt')]).delay(const Duration(seconds: 2));
-
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chapter 10 concat')),
-      // to string makes a stream to become a future that waits for all the events and return list
-      body: FutureBuilder<List<String>>(
-        future: getAllNames().toList(),
-        builder: (ctx, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-            case ConnectionState.active:
-              return const CircularProgressIndicator();
-            case ConnectionState.done:
-              final names = snapshot.data ?? [];
-              return ListView.builder(
-                itemBuilder: ((context, index) => ListTile(
-                      title: Text(names[index]),
-                    )),
-                itemCount: names.length,
-              );
-          }
-        },
-      ),
+      appBar: AppBar(title: const Text('')),
     );
   }
 }

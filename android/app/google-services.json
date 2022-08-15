@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1068602798305",
+    "project_id": "flutter-rx-27a3f",
+    "storage_bucket": "flutter-rx-27a3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068602798305:android:ade942f3200fd2f404c7a0",
+        "android_client_info": {
+          "package_name": "rx.flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068602798305-uv1r157ks420rtl619tr5br9g9bp5162.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfg5nDJUPB52jzIpXgMXedHGHn5Qvd-6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068602798305-uv1r157ks420rtl619tr5br9g9bp5162.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
