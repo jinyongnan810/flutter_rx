@@ -27,6 +27,8 @@ class ContactsBloc {
     userId.close();
     createContact.close();
     deleteContact.close();
+    _createContactSubscription.cancel();
+    _deleteContactSubscription.cancel();
   }
 
   ContactsBloc._({
