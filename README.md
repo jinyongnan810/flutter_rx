@@ -4,11 +4,31 @@ From: https://www.youtube.com/watch?v=xBFWMYmm9ro
 
 check out https://rxmarbles.com/#from
 
-## log in/out & curd data
+## automatically display loading screen when take actions
 
-- authentications & save contacts in firebase firestore([repo](https://github.com/jinyongnan810/flutter_rx))
+1. create [singleton loading screen](https://github.com/jinyongnan810/flutter_rx/commit/9390d05e1735bade541f2d0bd0b656a10305bbb1) with overlay
+2. automatically write to some sink when event emitted
 
-![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2Fc0fbf908-1f22-46c5-8d64-8990cc72790b.gif?alt=media&token=ecea1324-6ced-4b30-b8a7-5eac7e8c32be)
+```dart
+extension Loading<E> on Stream<E> {
+  Stream<E> setLoadingTo(
+    bool isLoading, {
+    required Sink<bool> sink,
+  }) =>
+      doOnEach((_) {
+        sink.add(isLoading);
+      });
+}
+```
+
+3. use setLoadingTo to the source and output
+
+```dart
+authActions
+        .setLoadingTo(true, sink: isLoading)  // set loading to true
+        .asyncMap<AuthError?>(...) // take some actions
+        .setLoadingTo(false, sink: isLoading); // set loading to false
+```
 
 ## make async actions & concat
 
