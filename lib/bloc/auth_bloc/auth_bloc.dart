@@ -21,6 +21,10 @@ class AuthBloc {
 
   final Sink<AuthCommand> authActions;
 
+  void dispose() {
+    authActions.close();
+  }
+
   const AuthBloc._({
     required this.status,
     required this.error,
