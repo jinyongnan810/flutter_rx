@@ -65,6 +65,10 @@ class AppBloc {
     _authBloc.authActions.add(const AuthCommand.logOut());
   }
 
+  void deleteAccount() {
+    // TODO: not implemented yet
+  }
+
   // views
   void goToContactListView() {
     _viewsBloc.goToView.add(CurrentView.contactList);
