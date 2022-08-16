@@ -7,4 +7,5 @@ abstract class AuthCommand with _$AuthCommand {
       {required String email, required String password}) = _AuthCommandSignUp;
   const factory AuthCommand.logIn(
       {required String email, required String password}) = _AuthCommandLogIn;
+  const factory AuthCommand.logOut() = _AuthCommandLogOut;
 }

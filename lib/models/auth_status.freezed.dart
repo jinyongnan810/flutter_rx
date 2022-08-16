@@ -19,19 +19,19 @@ mixin _$AuthStatus {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loggedOut,
-    required TResult Function() loggedIn,
+    required TResult Function(String userId) loggedIn,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loggedOut,
-    TResult Function()? loggedIn,
+    TResult Function(String userId)? loggedIn,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loggedOut,
-    TResult Function()? loggedIn,
+    TResult Function(String userId)? loggedIn,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,7 +114,7 @@ class _$_AuthStatusLoggedOut implements _AuthStatusLoggedOut {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loggedOut,
-    required TResult Function() loggedIn,
+    required TResult Function(String userId) loggedIn,
   }) {
     return loggedOut();
   }
@@ -123,7 +123,7 @@ class _$_AuthStatusLoggedOut implements _AuthStatusLoggedOut {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loggedOut,
-    TResult Function()? loggedIn,
+    TResult Function(String userId)? loggedIn,
   }) {
     return loggedOut?.call();
   }
@@ -132,7 +132,7 @@ class _$_AuthStatusLoggedOut implements _AuthStatusLoggedOut {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loggedOut,
-    TResult Function()? loggedIn,
+    TResult Function(String userId)? loggedIn,
     required TResult orElse(),
   }) {
     if (loggedOut != null) {
@@ -182,6 +182,7 @@ abstract class _$$_AuthStatusLoggedInCopyWith<$Res> {
   factory _$$_AuthStatusLoggedInCopyWith(_$_AuthStatusLoggedIn value,
           $Res Function(_$_AuthStatusLoggedIn) then) =
       __$$_AuthStatusLoggedInCopyWithImpl<$Res>;
+  $Res call({String userId});
 }
 
 /// @nodoc
@@ -194,54 +195,78 @@ class __$$_AuthStatusLoggedInCopyWithImpl<$Res>
 
   @override
   _$_AuthStatusLoggedIn get _value => super._value as _$_AuthStatusLoggedIn;
+
+  @override
+  $Res call({
+    Object? userId = freezed,
+  }) {
+    return _then(_$_AuthStatusLoggedIn(
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_AuthStatusLoggedIn implements _AuthStatusLoggedIn {
-  const _$_AuthStatusLoggedIn();
+  const _$_AuthStatusLoggedIn({required this.userId});
+
+  @override
+  final String userId;
 
   @override
   String toString() {
-    return 'AuthStatus.loggedIn()';
+    return 'AuthStatus.loggedIn(userId: $userId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_AuthStatusLoggedIn);
+        (other.runtimeType == runtimeType &&
+            other is _$_AuthStatusLoggedIn &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(userId));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_AuthStatusLoggedInCopyWith<_$_AuthStatusLoggedIn> get copyWith =>
+      __$$_AuthStatusLoggedInCopyWithImpl<_$_AuthStatusLoggedIn>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loggedOut,
-    required TResult Function() loggedIn,
+    required TResult Function(String userId) loggedIn,
   }) {
-    return loggedIn();
+    return loggedIn(userId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loggedOut,
-    TResult Function()? loggedIn,
+    TResult Function(String userId)? loggedIn,
   }) {
-    return loggedIn?.call();
+    return loggedIn?.call(userId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loggedOut,
-    TResult Function()? loggedIn,
+    TResult Function(String userId)? loggedIn,
     required TResult orElse(),
   }) {
     if (loggedIn != null) {
-      return loggedIn();
+      return loggedIn(userId);
     }
     return orElse();
   }
@@ -279,5 +304,11 @@ class _$_AuthStatusLoggedIn implements _AuthStatusLoggedIn {
 }
 
 abstract class _AuthStatusLoggedIn implements AuthStatus {
-  const factory _AuthStatusLoggedIn() = _$_AuthStatusLoggedIn;
+  const factory _AuthStatusLoggedIn({required final String userId}) =
+      _$_AuthStatusLoggedIn;
+
+  String get userId;
+  @JsonKey(ignore: true)
+  _$$_AuthStatusLoggedInCopyWith<_$_AuthStatusLoggedIn> get copyWith =>
+      throw _privateConstructorUsedError;
 }
