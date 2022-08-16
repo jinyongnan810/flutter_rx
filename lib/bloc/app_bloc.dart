@@ -29,7 +29,7 @@ class AppBloc {
 
   // public functions
   // contacts
-  void deleteContact(Contact contact) {
+  void deleteContact({required Contact contact}) {
     _contactsBloc.deleteContact.add(contact);
   }
 

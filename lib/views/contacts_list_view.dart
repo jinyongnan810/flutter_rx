@@ -88,7 +88,7 @@ class ContactListTile extends StatelessWidget {
         onPressed: () async {
           final res = await showDeleteContactDialog(context);
           if (res) {
-            deleteContact.call(contact);
+            deleteContact.call(contact: contact);
           }
         },
         icon: const Icon(Icons.delete),

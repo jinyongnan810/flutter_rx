@@ -46,7 +46,9 @@ class LoginView extends HookWidget {
             ),
             TextButton(
                 onPressed: () {
-                  login.call(emailController.text, passwordController.text);
+                  login(
+                      email: emailController.text,
+                      password: passwordController.text);
                 },
                 child: const Text('Log in')),
             TextButton(

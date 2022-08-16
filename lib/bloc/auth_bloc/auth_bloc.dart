@@ -43,10 +43,10 @@ class AuthBloc {
 
     final BehaviorSubject<AuthCommand> authActions =
         BehaviorSubject<AuthCommand>();
-    authActions.setLoadingTo(true, sink: isLoading);
 
-    final Stream<AuthError?> error =
-        authActions.asyncMap<AuthError?>((command) async {
+    final Stream<AuthError?> error = authActions
+        .setLoadingTo(true, sink: isLoading)
+        .asyncMap<AuthError?>((command) async {
       return command.when(signUp: ((email, password) async {
         try {
           await FirebaseAuth.instance

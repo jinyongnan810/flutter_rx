@@ -46,7 +46,9 @@ class RegisterView extends HookWidget {
             ),
             TextButton(
                 onPressed: () {
-                  signUp.call(emailController.text, passwordController.text);
+                  signUp(
+                      email: emailController.text,
+                      password: passwordController.text);
                 },
                 child: const Text('Sign up')),
             TextButton(

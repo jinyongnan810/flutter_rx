@@ -59,8 +59,10 @@ class NewContactView extends HookWidget {
               ),
               TextButton(
                   onPressed: () {
-                    createContact(firstNameController.text,
-                        lastNameController.text, phoneController.text);
+                    createContact(
+                        firstName: firstNameController.text,
+                        lastName: lastNameController.text,
+                        phone: phoneController.text);
                     goBack.call();
                   },
                   child: const Text('Create Contact'))
