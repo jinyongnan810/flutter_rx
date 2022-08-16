@@ -76,7 +76,6 @@ class _HomePageState extends State<HomePage> {
   void handleIsLoading() async {
     await _isLoadingSubscription?.cancel();
     _isLoadingSubscription = appBloc.isLoading.listen((isLoading) {
-      print(isLoading);
       if (isLoading) {
         LoadingScreen.instance().show(context: context, text: 'Loading...');
       } else {

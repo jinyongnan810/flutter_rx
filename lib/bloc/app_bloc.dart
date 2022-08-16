@@ -66,7 +66,8 @@ class AppBloc {
   }
 
   void deleteAccount() {
-    // TODO: not implemented yet
+    _contactsBloc.deleteAllContacts.add(null);
+    _authBloc.authActions.add(const AuthCommand.deleteAccount());
   }
 
   // views

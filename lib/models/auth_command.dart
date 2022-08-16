@@ -8,4 +8,5 @@ abstract class AuthCommand with _$AuthCommand {
   const factory AuthCommand.logIn(
       {required String email, required String password}) = _AuthCommandLogIn;
   const factory AuthCommand.logOut() = _AuthCommandLogOut;
+  const factory AuthCommand.deleteAccount() = _AuthCommandDeleteAccount;
 }

@@ -19,16 +19,20 @@ class ContactsBloc {
   final Sink<String?> userId;
   final Sink<Contact> createContact;
   final Sink<Contact> deleteContact;
+  final Sink<void> deleteAllContacts;
   final Stream<Iterable<Contact>> contacts;
   final StreamSubscription<void> _createContactSubscription;
   final StreamSubscription<void> _deleteContactSubscription;
+  final StreamSubscription<void> _deleteAllContactsSubscription;
 
   void dispose() {
     userId.close();
     createContact.close();
     deleteContact.close();
+    deleteAllContacts.close();
     _createContactSubscription.cancel();
     _deleteContactSubscription.cancel();
+    _deleteAllContactsSubscription.cancel();
   }
 
   ContactsBloc._({
@@ -36,10 +40,13 @@ class ContactsBloc {
     required this.createContact,
     required this.deleteContact,
     required this.contacts,
+    required this.deleteAllContacts,
     required StreamSubscription<void> createContactSubscription,
     required StreamSubscription<void> deleteContactSubscription,
+    required StreamSubscription<void> deleteAllContactsSubscription,
   })  : _createContactSubscription = createContactSubscription,
-        _deleteContactSubscription = deleteContactSubscription;
+        _deleteContactSubscription = deleteContactSubscription,
+        _deleteAllContactsSubscription = deleteAllContactsSubscription;
 
   factory ContactsBloc() {
     final backend = FirebaseFirestore.instance;
@@ -75,13 +82,26 @@ class ContactsBloc {
         // hot stream(observe)
         .listen((event) {});
 
+    final deleteAllContacts = BehaviorSubject<void>();
+    final deleteAllContactsSubscription = deleteAllContacts
+        .switchMap((_) => userId.take(1).unwrap())
+        .asyncMap((userId) => backend.collection(userId).get())
+        .switchMap((collection) {
+      final stream = Stream.fromFutures(
+          collection.docs.map((doc) => doc.reference.delete()));
+      return stream;
+    })
+        // hot stream(observe)
+        .listen((event) {});
+
     return ContactsBloc._(
-      userId: userId,
-      createContact: createContact,
-      deleteContact: deleteContact,
-      contacts: contacts,
-      createContactSubscription: createContactSubscription,
-      deleteContactSubscription: deleteContactSubscription,
-    );
+        userId: userId,
+        createContact: createContact,
+        deleteContact: deleteContact,
+        deleteAllContacts: deleteAllContacts,
+        contacts: contacts,
+        createContactSubscription: createContactSubscription,
+        deleteContactSubscription: deleteContactSubscription,
+        deleteAllContactsSubscription: deleteAllContactsSubscription);
   }
 }

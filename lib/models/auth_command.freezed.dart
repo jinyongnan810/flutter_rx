@@ -21,6 +21,7 @@ mixin _$AuthCommand {
     required TResult Function(String email, String password) signUp,
     required TResult Function(String email, String password) logIn,
     required TResult Function() logOut,
+    required TResult Function() deleteAccount,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$AuthCommand {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$AuthCommand {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$AuthCommand {
     required TResult Function(_AuthCommandSignUp value) signUp,
     required TResult Function(_AuthCommandLogIn value) logIn,
     required TResult Function(_AuthCommandLogOut value) logOut,
+    required TResult Function(_AuthCommandDeleteAccount value) deleteAccount,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$AuthCommand {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$AuthCommand {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -157,6 +163,7 @@ class _$_AuthCommandSignUp implements _AuthCommandSignUp {
     required TResult Function(String email, String password) signUp,
     required TResult Function(String email, String password) logIn,
     required TResult Function() logOut,
+    required TResult Function() deleteAccount,
   }) {
     return signUp(email, password);
   }
@@ -167,6 +174,7 @@ class _$_AuthCommandSignUp implements _AuthCommandSignUp {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
   }) {
     return signUp?.call(email, password);
   }
@@ -177,6 +185,7 @@ class _$_AuthCommandSignUp implements _AuthCommandSignUp {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
     required TResult orElse(),
   }) {
     if (signUp != null) {
@@ -191,6 +200,7 @@ class _$_AuthCommandSignUp implements _AuthCommandSignUp {
     required TResult Function(_AuthCommandSignUp value) signUp,
     required TResult Function(_AuthCommandLogIn value) logIn,
     required TResult Function(_AuthCommandLogOut value) logOut,
+    required TResult Function(_AuthCommandDeleteAccount value) deleteAccount,
   }) {
     return signUp(this);
   }
@@ -201,6 +211,7 @@ class _$_AuthCommandSignUp implements _AuthCommandSignUp {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
   }) {
     return signUp?.call(this);
   }
@@ -211,6 +222,7 @@ class _$_AuthCommandSignUp implements _AuthCommandSignUp {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
     required TResult orElse(),
   }) {
     if (signUp != null) {
@@ -310,6 +322,7 @@ class _$_AuthCommandLogIn implements _AuthCommandLogIn {
     required TResult Function(String email, String password) signUp,
     required TResult Function(String email, String password) logIn,
     required TResult Function() logOut,
+    required TResult Function() deleteAccount,
   }) {
     return logIn(email, password);
   }
@@ -320,6 +333,7 @@ class _$_AuthCommandLogIn implements _AuthCommandLogIn {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
   }) {
     return logIn?.call(email, password);
   }
@@ -330,6 +344,7 @@ class _$_AuthCommandLogIn implements _AuthCommandLogIn {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
     required TResult orElse(),
   }) {
     if (logIn != null) {
@@ -344,6 +359,7 @@ class _$_AuthCommandLogIn implements _AuthCommandLogIn {
     required TResult Function(_AuthCommandSignUp value) signUp,
     required TResult Function(_AuthCommandLogIn value) logIn,
     required TResult Function(_AuthCommandLogOut value) logOut,
+    required TResult Function(_AuthCommandDeleteAccount value) deleteAccount,
   }) {
     return logIn(this);
   }
@@ -354,6 +370,7 @@ class _$_AuthCommandLogIn implements _AuthCommandLogIn {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
   }) {
     return logIn?.call(this);
   }
@@ -364,6 +381,7 @@ class _$_AuthCommandLogIn implements _AuthCommandLogIn {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
     required TResult orElse(),
   }) {
     if (logIn != null) {
@@ -429,6 +447,7 @@ class _$_AuthCommandLogOut implements _AuthCommandLogOut {
     required TResult Function(String email, String password) signUp,
     required TResult Function(String email, String password) logIn,
     required TResult Function() logOut,
+    required TResult Function() deleteAccount,
   }) {
     return logOut();
   }
@@ -439,6 +458,7 @@ class _$_AuthCommandLogOut implements _AuthCommandLogOut {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
   }) {
     return logOut?.call();
   }
@@ -449,6 +469,7 @@ class _$_AuthCommandLogOut implements _AuthCommandLogOut {
     TResult Function(String email, String password)? signUp,
     TResult Function(String email, String password)? logIn,
     TResult Function()? logOut,
+    TResult Function()? deleteAccount,
     required TResult orElse(),
   }) {
     if (logOut != null) {
@@ -463,6 +484,7 @@ class _$_AuthCommandLogOut implements _AuthCommandLogOut {
     required TResult Function(_AuthCommandSignUp value) signUp,
     required TResult Function(_AuthCommandLogIn value) logIn,
     required TResult Function(_AuthCommandLogOut value) logOut,
+    required TResult Function(_AuthCommandDeleteAccount value) deleteAccount,
   }) {
     return logOut(this);
   }
@@ -473,6 +495,7 @@ class _$_AuthCommandLogOut implements _AuthCommandLogOut {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
   }) {
     return logOut?.call(this);
   }
@@ -483,6 +506,7 @@ class _$_AuthCommandLogOut implements _AuthCommandLogOut {
     TResult Function(_AuthCommandSignUp value)? signUp,
     TResult Function(_AuthCommandLogIn value)? logIn,
     TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
     required TResult orElse(),
   }) {
     if (logOut != null) {
@@ -494,4 +518,124 @@ class _$_AuthCommandLogOut implements _AuthCommandLogOut {
 
 abstract class _AuthCommandLogOut implements AuthCommand {
   const factory _AuthCommandLogOut() = _$_AuthCommandLogOut;
+}
+
+/// @nodoc
+abstract class _$$_AuthCommandDeleteAccountCopyWith<$Res> {
+  factory _$$_AuthCommandDeleteAccountCopyWith(
+          _$_AuthCommandDeleteAccount value,
+          $Res Function(_$_AuthCommandDeleteAccount) then) =
+      __$$_AuthCommandDeleteAccountCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_AuthCommandDeleteAccountCopyWithImpl<$Res>
+    extends _$AuthCommandCopyWithImpl<$Res>
+    implements _$$_AuthCommandDeleteAccountCopyWith<$Res> {
+  __$$_AuthCommandDeleteAccountCopyWithImpl(_$_AuthCommandDeleteAccount _value,
+      $Res Function(_$_AuthCommandDeleteAccount) _then)
+      : super(_value, (v) => _then(v as _$_AuthCommandDeleteAccount));
+
+  @override
+  _$_AuthCommandDeleteAccount get _value =>
+      super._value as _$_AuthCommandDeleteAccount;
+}
+
+/// @nodoc
+
+class _$_AuthCommandDeleteAccount implements _AuthCommandDeleteAccount {
+  const _$_AuthCommandDeleteAccount();
+
+  @override
+  String toString() {
+    return 'AuthCommand.deleteAccount()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_AuthCommandDeleteAccount);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String email, String password) signUp,
+    required TResult Function(String email, String password) logIn,
+    required TResult Function() logOut,
+    required TResult Function() deleteAccount,
+  }) {
+    return deleteAccount();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String email, String password)? signUp,
+    TResult Function(String email, String password)? logIn,
+    TResult Function()? logOut,
+    TResult Function()? deleteAccount,
+  }) {
+    return deleteAccount?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String email, String password)? signUp,
+    TResult Function(String email, String password)? logIn,
+    TResult Function()? logOut,
+    TResult Function()? deleteAccount,
+    required TResult orElse(),
+  }) {
+    if (deleteAccount != null) {
+      return deleteAccount();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AuthCommandSignUp value) signUp,
+    required TResult Function(_AuthCommandLogIn value) logIn,
+    required TResult Function(_AuthCommandLogOut value) logOut,
+    required TResult Function(_AuthCommandDeleteAccount value) deleteAccount,
+  }) {
+    return deleteAccount(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_AuthCommandSignUp value)? signUp,
+    TResult Function(_AuthCommandLogIn value)? logIn,
+    TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
+  }) {
+    return deleteAccount?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AuthCommandSignUp value)? signUp,
+    TResult Function(_AuthCommandLogIn value)? logIn,
+    TResult Function(_AuthCommandLogOut value)? logOut,
+    TResult Function(_AuthCommandDeleteAccount value)? deleteAccount,
+    required TResult orElse(),
+  }) {
+    if (deleteAccount != null) {
+      return deleteAccount(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AuthCommandDeleteAccount implements AuthCommand {
+  const factory _AuthCommandDeleteAccount() = _$_AuthCommandDeleteAccount;
 }

@@ -76,6 +76,15 @@ class AuthBloc {
         } catch (_) {
           return const AuthErrorUnknown();
         }
+      }, deleteAccount: () async {
+        try {
+          await FirebaseAuth.instance.currentUser?.delete();
+          return null;
+        } on FirebaseAuthException catch (e) {
+          return AuthError.from(e);
+        } catch (_) {
+          return const AuthErrorUnknown();
+        }
       });
     }).setLoadingTo(false, sink: isLoading);
 
