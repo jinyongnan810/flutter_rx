@@ -10,7 +10,40 @@ check out https://rxmarbles.com/#from
 
 ![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2Fc0fbf908-1f22-46c5-8d64-8990cc72790b.gif?alt=media&token=ecea1324-6ced-4b30-b8a7-5eac7e8c32be)
 
-## map stream emits to make async calls using async map
+## map firestore docs(depend on current userId)
+
+```dart
+final userId = BehaviorSubject<String?>();
+
+// when userId changes, grab contacts
+final Stream<Iterable<Contact>> contacts =
+    userId.switchMap<_Snapshots>((userId) {
+  if (userId == null) return const Stream<_Snapshots>.empty();
+  return backend.collection(userId).snapshots();
+}).map<Iterable<Contact>>((snapshots) sync* {
+  for (final doc in snapshots.docs) {
+    yield Contact.fromJson(doc.data(), id: doc.id);
+  }
+});
+// sync * results in Iterable  (Stream<Iterable<String>> foo1)
+final foo1 = Stream.periodic(const Duration(seconds:1),(n)=>n).map((n) sync* {yield n.toString();});
+// async * results in stream  (Stream<Stream<String>> foo2)
+final foo2 = Stream.periodic(const Duration(seconds:1),(n)=>n).map((n) async* {yield n.toString();});
+```
+
+## remove null emits from stream
+
+```dart
+extension Unwrap<T> on Stream<T?> {
+  Stream<T> unwrap() => switchMap((value) async* {
+        if (value != null) {
+          yield value;
+        }
+      });
+}
+```
+
+## map stream emits to make async calls using asyncMap
 
 ```dart
 final Stream<AuthError?> error = authActions

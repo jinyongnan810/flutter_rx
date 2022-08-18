@@ -53,7 +53,7 @@ class ContactsBloc {
 
     final userId = BehaviorSubject<String?>();
 
-    // when userId changes, grab contacts
+// when userId changes, grab contacts
     final Stream<Iterable<Contact>> contacts =
         userId.switchMap<_Snapshots>((userId) {
       if (userId == null) return const Stream<_Snapshots>.empty();
@@ -63,6 +63,14 @@ class ContactsBloc {
         yield Contact.fromJson(doc.data(), id: doc.id);
       }
     });
+    // final foo1 =
+    //     Stream.periodic(const Duration(seconds: 1), (n) => n).map((n) sync* {
+    //   yield n.toString();
+    // });
+    // final foo2 =
+    //     Stream.periodic(const Duration(seconds: 1), (n) => n).map((n) async* {
+    //   yield n.toString();
+    // });
 
     final createContact = BehaviorSubject<Contact>();
     final createContactSubscription = createContact.switchMap((contact) {
