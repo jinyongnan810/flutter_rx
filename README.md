@@ -10,6 +10,40 @@ check out https://rxmarbles.com/#from
 
 ![image](https://firebasestorage.googleapis.com/v0/b/mymemo-98f76.appspot.com/o/uploads%2FSIvHI3wJfEPSACxfj6WH1l53vZx1%2Fc0fbf908-1f22-46c5-8d64-8990cc72790b.gif?alt=media&token=ecea1324-6ced-4b30-b8a7-5eac7e8c32be)
 
+## create/delete doc(s) from firestore collection
+
+```dart
+final createContact = BehaviorSubject<Contact>();
+final createContactSubscription = createContact.switchMap((contact) {
+  return userId
+      .take(1)
+      .unwrap()
+      .asyncMap((userId) => backend.collection(userId).add(contact.data));
+})
+    // hot stream(observe)
+    .listen((event) {});
+
+final deleteContact = BehaviorSubject<Contact>();
+final deleteContactSubscription = deleteContact.switchMap((contact) {
+  return userId.take(1).unwrap().asyncMap(
+      (userId) => backend.collection(userId).doc(contact.id).delete());
+})
+    // hot stream(observe)
+    .listen((event) {});
+
+final deleteAllContacts = BehaviorSubject<void>();
+final deleteAllContactsSubscription = deleteAllContacts
+    .switchMap((_) => userId.take(1).unwrap())
+    .asyncMap((userId) => backend.collection(userId).get())
+    .switchMap((collection) {
+  final stream = Stream.fromFutures(
+      collection.docs.map((doc) => doc.reference.delete()));
+  return stream;
+})
+    // hot stream(observe)
+    .listen((event) {});
+```
+
 ## map firestore docs(depend on current userId)
 
 ```dart
